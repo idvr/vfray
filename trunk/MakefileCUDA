@@ -5,13 +5,15 @@
 ################################################################################
 
 # Add source files here
-EXECUTABLE	:= vfRay
+EXECUTABLE   := vfRay
+
 # Cuda source files (compiled with cudacc)
-CUFILES		:= vfRay.cu
+CUFILES	      := vfRay.cu
+
 # C/C++ source files (compiled with gcc / c++)
-CFILES          :=
-CCFILES		:= vfRayPreComp.cc
-CPPFILES        :=
+CCFILES       := vfRayPreComp.cc
+
+verbose	       := 1
 
 ################################################################################
 # Rules and targets

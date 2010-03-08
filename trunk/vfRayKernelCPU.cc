@@ -19,7 +19,7 @@
 
 #if USEPARTIALPREINT
 
-#include "../psiGammaTable/psiGammaTable512.h"
+#include "psiGammaTable512.h"
 
 #endif
 

@@ -137,7 +137,7 @@ uchar *d_finalImage, *h_finalImage;
 
 cudaArray* d_psiGammaTable;
 
-#include "../psiGammaTable/psiGammaTable512.h"
+#include "psiGammaTable512.h"
 
 #endif
 

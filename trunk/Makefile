@@ -1,46 +1,17 @@
 #
-# Makefile CPU
+# Makefile CPU / CUDA
 #
-
-CXX = g++
-
-INCLUDES =
-
-LIBDIR =
-
-OBJS = main.o vfRayPreComp.o vfRayKernelCPU.o
-
-SRCS = $(OBJS:.o=.cc)
-
-APP = vfRay
-
-DEBUGFLAGS = -g
-OPTFLAGS = -O3 -ffast-math
-
-FLAGS = $(DEBUGFLAGS) \
-	$(OPTFLAGS) \
-	-Wall -Wno-deprecated \
-	$(INCLUDES)
-
-LIBS =
 
 #-----------------------------------------------------------------------------
 
-$(APP): $(OBJS)
-	@echo "Linking ..."
-	$(CXX) $(FLAGS) -o $(APP) $(OBJS) $(LIBDIR) $(LIBS)
+all: 	cpu cuda
 
-depend:
-	rm -f .depend
-	$(CXX) -M $(FLAGS) $(SRCS) > .depend
+cpu:	MakefileCPU
+	make -f MakefileCPU
 
-.cc.o: $*.h
-	@echo "Compiling ..."
-	$(CXX) $(FLAGS) -c $*.cc
+cuda:	MakefileCUDA
+	make -f MakefileCUDA
 
 clean:
-	rm -f *.o *~ \#* $(APP) .depend
-
-ifeq (.depend,$(wildcard .depend))
-include .depend
-endif
+	make -f MakefileCPU clean
+	make -f MakefileCUDA clean

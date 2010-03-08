@@ -33,11 +33,12 @@
 #
 ################################################################################
 
-.SUFFIXES : .cu .cu_dbg_o .c_dbg_o .cpp_dbg_o .cu_rel_o .c_rel_o .cpp_rel_o .cubin
+.SUFFIXES : .cu .cu_dbg.o .c_dbg.o .cpp_dbg.o .cu_rel.o .c_rel.o .cpp_rel.o .cubin .ptx
 
-CUDA_INSTALL_PATH ?= /usr/local/cuda-2.0
+# Add new SM Versions here as devices with new Compute Capability are released
+SM_VERSIONS := sm_10 sm_11 sm_12 sm_13
 
-verbose ?= 1
+CUDA_INSTALL_PATH ?= /usr/local/cuda
 
 ifdef cuda-install
 	CUDA_INSTALL_PATH := $(cuda-install)
@@ -46,7 +47,7 @@ endif
 # Basic directory setup for SDK
 # (override directories only if they are not already defined)
 SRCDIR     ?= 
-ROOTDIR    ?= /scratch0/andmax/NVIDIA_CUDA_SDK
+ROOTDIR    ?= /usr/local/cuda/SDK/C
 
 BINDIR     ?= ./
 ROOTOBJDIR ?= ./
@@ -89,7 +90,7 @@ CWARN_FLAGS := $(CXXWARN_FLAGS) \
 	-Wmain \
 
 # Compiler-specific flags
-NVCCFLAGS := --ptxas-options=-v
+NVCCFLAGS := --ptxas-options=-v --compiler-bindir=/usr/bin/gcc-4.3
 CXXFLAGS  := $(CXXWARN_FLAGS)
 CFLAGS    := $(CWARN_FLAGS)
 
@@ -151,7 +152,7 @@ ifeq ($(USECUDPP), 1)
 endif
 
 # Libs
-LIB       := -L$(CUDA_INSTALL_PATH)/lib -L$(LIBDIR) -L$(COMMONDIR)/lib
+LIB       := -L$(CUDA_INSTALL_PATH)/lib64 -L$(LIBDIR) -L$(COMMONDIR)/lib
 ifeq ($(USEDRVAPI),1)
    LIB += -lcuda -lcudart ${OPENGLLIB} $(PARAMGLLIB) $(CUDPPLIB) ${LIB} 
 else
