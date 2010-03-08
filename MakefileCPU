@@ -12,7 +12,7 @@ OBJS = main.o vfRayPreComp.o vfRayKernelCPU.o
 
 SRCS = $(OBJS:.o=.cc)
 
-APP = vfRay
+APP = vfRayCPU
 
 DEBUGFLAGS = -g
 OPTFLAGS = -O3 -ffast-math
