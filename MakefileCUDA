@@ -1,0 +1,19 @@
+################################################################################
+#
+# Visible Faces Ray Casting using CUDA (VF-Ray CUDA)
+#
+################################################################################
+
+# Add source files here
+EXECUTABLE	:= vfRay
+# Cuda source files (compiled with cudacc)
+CUFILES		:= vfRay.cu
+# C/C++ source files (compiled with gcc / c++)
+CFILES          :=
+CCFILES		:= vfRayPreComp.cc
+CPPFILES        :=
+
+################################################################################
+# Rules and targets
+
+include common.mk
