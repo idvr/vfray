@@ -59,8 +59,8 @@ Usage:
 
     Command line: ./vfRay 'volume'
 
-    VF-Ray program search by default a directory with volume
-    informations named: ../tet_offs/.  For example, run it by calling:
+    VF-Ray program searches by default a directory with volume
+    information named: ../tet_offs/.  For example, run it by calling:
 
     $ ./vfRay spx2
 
