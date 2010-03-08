@@ -1,0 +1,79 @@
+*************************************************************************
+**                                                                     **
+**               VF-Ray - Visible-Faces Driven Ray Casting             **
+**                                                                     **
+**                              README File                            **
+**                                                                     **
+*************************************************************************
+
+    VF-Ray is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    VF-Ray is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Abstract:
+
+Volume ray casting algorithms benefit greatly with recent increase of
+GPU capabilities and power. In this paper, we present a novel memory
+efficient ray casting algorithm for unstructured grids completely
+implemented on GPU using a recent off-the-shelf nVidia graphics
+card. Our approach is built upon a recent CPU ray casting algorithm,
+called VF-Ray, that considerably reduces the memory footprint while
+keeping good performance. In addition to the implementation of VF-Ray
+in the graphics hardware, we also propose a restructuring in its data
+structures. As a result, our algorithm is much faster than the
+original software version, while using significantly less memory, it
+needed only one-half of its previous memory usage. Comparing our GPU
+implementation to other hardware-based ray casting algorithms, our
+approach used between three to ten times less memory. These results
+made it possible for our GPU implementation to handle larger datasets
+on GPU than previous approaches.
+
+Instalation:
+
+    VF-Ray code was written and tested on Linux platform using Compute
+    Unified Device Architecture (CUDA) Utilities from nVidia for CUDA
+    binding.  To download and/or see more information about above
+    dependency see:
+
+    CUDA: http://www.nvidia.com/object/cuda_get.html
+
+    In order to proper compile the VF-Ray code, the CUDA compile
+    wrapper (nvcc) and libraries (cuda, cudart and cutil) should
+    have been installed by CUDA Toolkit and SDK from nVidia.  The
+    Makefile, MakefileCPU and MakefileCUDA can be optionally edited
+    to reflect specific configurations.
+
+Usage:
+
+    VF-Ray program is designed to run using a GPU that supports nVidia
+    CUDA language.  It has been tested on a GeForce 8800 series.
+
+    Command line: ./vfRay 'volume'
+
+    VF-Ray program search by default a directory with volume
+    informations named: ../tet_offs/.  For example, run it by calling:
+
+    $ ./vfRay spx2
+
+    and it will search for: ../tet_offs/spx2.off.  Additionally, files
+    named spx2.tf, spx2.lmt, spx2.con and spx2.extf will also be opened 
+    in the same directory.  If they don't exist, they will be computed
+    and created.  The only required file is the volume itself:
+    ../tet_offs/'volume'.off.
+
+File Formats:
+
+    .off   -   Model file ( vertex position and tetrahedra ids )
+    .tf    -   Transfer Function file
+    .lmt   -   limits file ( maxEdgeLength, maxZ and minZ values )
+    .extf  -   external faces file
+    .con   -   cell connectivity file

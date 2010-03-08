@@ -1,0 +1,45 @@
+*************************************************************************
+**                                                                     **
+**               VF-Ray - Visible-Faces Driven Ray Casting             **
+**                                                                     **
+**                             AUTHORS File                            **
+**                                                                     **
+*************************************************************************
+
+    VF-Ray is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    VF-Ray is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Credits:
+
+    VF-Ray Main Code:
+
+        Maximo, Andre (andmax@gmail.com)
+        Ribeiro, Saulo (saullo@gmail.com)
+
+    Contributors:
+
+        Farias, Ricardo (rfarias@gmail.com)
+	Bentes, Crisitiana (cristianabentes@gmail.com)
+	Oliveira, Antonio (oliveira@cos.ufrj.br)
+
+    Publication History:
+
+	Memory Efficient GPU-Based Ray Casting for Unstructured Volume Rendering
+	A. Maximo ; S. Ribeiro ; C. Bentes ; A. Oliveira ; R. Farias.
+	IEEE/EG International Symposium on Volume and Point-Based Graphics 2008.
+	PBG-VG 2008 Paper, Los Angeles, CA, USA.
+
+	Memory-Aware and Efficient Ray-Casting Algorithm
+	S. Ribeiro ; A. Maximo ; C. Bentes ; A. Oliveira ; R. Farias.
+	Brazilian Symposium on Computer Graphics and Image Processing.
+	SIBGRAPI 2007 Paper, Belo Horizonte, MG, Brazil.
