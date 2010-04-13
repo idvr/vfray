@@ -6,18 +6,19 @@
 **                                                                     **
 *************************************************************************
 
-    VF-Ray is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
+    VF-Ray is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    VF-Ray is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    VF-Ray is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    along with this program.  If not, see
+    <http://www.gnu.org/licenses/>.
 
 Abstract:
 
@@ -47,15 +48,15 @@ Instalation:
     CUDA: http://www.nvidia.com/object/cuda_get.html
 
     In order to proper compile the VF-Ray code, the CUDA compile
-    wrapper (nvcc) and libraries (cuda, cudart and cutil) should
-    have been installed by CUDA Toolkit and SDK from nVidia.  The
-    Makefile, MakefileCPU and MakefileCUDA can be optionally edited
-    to reflect specific configurations.
+    wrapper (nvcc) and libraries (cuda, cudart and cutil) should have
+    been installed by CUDA Toolkit and SDK from nVidia.  The Makefile,
+    MakefileCPU and MakefileCUDA can be optionally edited to reflect
+    specific configurations.
 
 Usage:
 
     VF-Ray program is designed to run using a GPU that supports nVidia
-    CUDA language.  It has been tested on a GeForce 8800 series.
+    CUDA language.  It has been tested on a nVidia GeForce 8800.
 
     Command line: ./vfRay 'volume'
 
@@ -65,10 +66,10 @@ Usage:
     $ ./vfRay spx2
 
     and it will search for: ../tet_offs/spx2.off.  Additionally, files
-    named spx2.tf, spx2.lmt, spx2.con and spx2.extf will also be opened 
-    in the same directory.  If they don't exist, they will be computed
-    and created.  The only required file is the volume itself:
-    ../tet_offs/'volume'.off.
+    named spx2.tf, spx2.lmt, spx2.con and spx2.extf will also be
+    opened in the same directory.  If they don't exist, they will be
+    computed and created.  The only required file is the volume
+    itself: ../tet_offs/'volume'.off.
 
 File Formats:
 
