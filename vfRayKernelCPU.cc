@@ -187,14 +187,15 @@ vfRay( uchar* finalImage, const real* vertList,
 	uint4 boundingBox = projVisFaces[ extFaceId ].bBox;
 
 	/// Retrieve projected visible face vertices
- 	real4 fv0 = real4Fetch( vertList, tetList[ tfPrev.x*4 + ((tfPrev.y+0)&3) ] );
- 	real4 fv1 = real4Fetch( vertList, tetList[ tfPrev.x*4 + ((tfPrev.y+1)&3) ] );
- 	real4 fv2 = real4Fetch( vertList, tetList[ tfPrev.x*4 + ((tfPrev.y+2)&3) ] );
+	real4 fv[4];
+ 	fv[0] = real4Fetch( vertList, tetList[ tfPrev.x*4 + ((tfPrev.y+0)&3) ] );
+ 	fv[1] = real4Fetch( vertList, tetList[ tfPrev.x*4 + ((tfPrev.y+1)&3) ] );
+ 	fv[2] = real4Fetch( vertList, tetList[ tfPrev.x*4 + ((tfPrev.y+2)&3) ] );
 
 	/// Compute projected visible face vectors
 	real2 vf_01, vf_02;
-	vf_01.x = fv1.x - fv0.x; vf_01.y = fv1.y - fv0.y;
-	vf_02.x = fv2.x - fv0.x; vf_02.y = fv2.y - fv0.y;
+	vf_01.x = fv[1].x - fv[0].x; vf_01.y = fv[1].y - fv[0].y;
+	vf_02.x = fv[2].x - fv[0].x; vf_02.y = fv[2].y - fv[0].y;
 
 	/// Compute visible face crosses to be used in inside face test
 	real3 vf_crosses;
@@ -296,42 +297,46 @@ vfRay( uchar* finalImage, const real* vertList,
 				coPrev.w = tfColor.w;
 				real opacity = 0.0;
 #endif
+				real2 v0, v1, v2; /// vectors from face vertex 0 to pixel, vertex 1 and 2
 
 				while (1) {
 
 					/// Set no-next face initially
 					tfNext.y = tfPrev.y;
 
+					fv[0] = real4Fetch(vertList, tetList[ tfPrev.x*4 + 0 ] );
+					fv[1] = real4Fetch(vertList, tetList[ tfPrev.x*4 + 1 ] );
+					fv[2] = real4Fetch(vertList, tetList[ tfPrev.x*4 + 2 ] );
+					fv[3] = real4Fetch(vertList, tetList[ tfPrev.x*4 + 3 ] );
+
 					for (i = 1; i < 4; i++) { // for each other face
 
 						faceId = (tfPrev.y+i)&3;
 
-						fv0 = real4Fetch(vertList, tetList[ tfPrev.x*4 + ((faceId+0)&3) ] );
-						fv1 = real4Fetch(vertList, tetList[ tfPrev.x*4 + ((faceId+1)&3) ] );
-						fv2 = real4Fetch(vertList, tetList[ tfPrev.x*4 + ((faceId+2)&3) ] );
+						v1.x = fv[(faceId+1)&3].x - fv[(faceId+0)&3].x;
+						v1.y = fv[(faceId+1)&3].y - fv[(faceId+0)&3].y;
+						v2.x = fv[(faceId+2)&3].x - fv[(faceId+0)&3].x;
+						v2.y = fv[(faceId+2)&3].y - fv[(faceId+0)&3].y;
 
-						fv1.x -= fv0.x; fv1.y -= fv0.y;
-						fv2.x -= fv0.x; fv2.y -= fv0.y;
-
-						nf_crosses.x = ( fv1.x * fv2.y ) - ( fv1.y * fv2.x );
+						nf_crosses.x = ( v1.x * v2.y ) - ( v1.y * v2.x );
 
 						if (ABS(nf_crosses.x) < RDELTA)
 							continue;
 
 						if (nf_crosses.x < 0.0) { /// Swap vectors
 
-							tmp.x = fv1.x; tmp.y = fv1.y;
-							fv1.x = fv2.x; fv1.y = fv2.y;
-							fv2.x = tmp.x; fv2.y = tmp.y;
+							tmp.x = v1.x; tmp.y = v1.y;
+							v1.x = v2.x; v1.y = v2.y;
+							v2.x = tmp.x; v2.y = tmp.y;
 							nf_crosses.x = -nf_crosses.x;
 
 						}
 
-						fv0.x = obj.x - fv0.x;
-						fv0.y = obj.y - fv0.y;
+						v0.x = obj.x - fv[(faceId+0)&3].x;
+						v0.y = obj.y - fv[(faceId+0)&3].y;
 
-						nf_crosses.y = ( fv1.x * fv0.y ) - ( fv1.y * fv0.x );
-						nf_crosses.z = ( fv0.x * fv2.y ) - ( fv0.y * fv2.x );
+						nf_crosses.y = ( v1.x * v0.y ) - ( v1.y * v0.x );
+						nf_crosses.z = ( v0.x * v2.y ) - ( v0.y * v2.x );
 
 						if ( (nf_crosses.y >= 0.0) && (nf_crosses.z >= 0.0)
 						     && ((nf_crosses.y + nf_crosses.z) <= nf_crosses.x + RDELTA) ) {
@@ -362,11 +367,7 @@ vfRay( uchar* finalImage, const real* vertList,
 					}
 
 					// Buffer indexing by centroidZ -- O(1) search
-					fv0 = real4Fetch(vertList, tetList[ tfPrev.x*4 + ((tfNext.y+0)&3) ] );
-					fv1 = real4Fetch(vertList, tetList[ tfPrev.x*4 + ((tfNext.y+1)&3) ] );
-					fv2 = real4Fetch(vertList, tetList[ tfPrev.x*4 + ((tfNext.y+2)&3) ] );
-
-					centroidZ = (fv0.z + fv1.z + fv2.z) / 3.0;
+					centroidZ = (fv[(tfNext.y+0)&3].z + fv[(tfNext.y+1)&3].z + fv[(tfNext.y+2)&3].z) / 3.0;
 
 					bufId = (uint) ( (centroidZ - minZ) / stepZ );
 
@@ -378,8 +379,8 @@ vfRay( uchar* finalImage, const real* vertList,
 
 						/// Load face matrix
 						real3 fmCol0, fmCol1;
-						fmCol0.x = fv0.x; fmCol0.y = fv1.x; fmCol0.z = fv2.x;
-						fmCol1.x = fv0.y; fmCol1.y = fv1.y; fmCol1.z = fv2.y;
+						fmCol0.x = fv[(tfNext.y+0)&3].x; fmCol0.y = fv[(tfNext.y+1)&3].x; fmCol0.z = fv[(tfNext.y+2)&3].x;
+						fmCol1.x = fv[(tfNext.y+0)&3].y; fmCol1.y = fv[(tfNext.y+1)&3].y; fmCol1.z = fv[(tfNext.y+2)&3].y;
 
 						/// Compute determinant
 						real determinant;
@@ -393,7 +394,7 @@ vfRay( uchar* finalImage, const real* vertList,
 						/// Load face target and solve linear system
 						real3 faceTarget, tmp;
 
-						faceTarget.x = fv0.z; faceTarget.y = fv1.z; faceTarget.z = fv2.z;
+						faceTarget.x = fv[(tfNext.y+0)&3].z; faceTarget.y = fv[(tfNext.y+1)&3].z; faceTarget.z = fv[(tfNext.y+2)&3].z;
 
 						tmp.x = faceTarget.y - faceTarget.z;
 						tmp.y = (faceTarget.y * fmCol1.z) - (fmCol1.y * faceTarget.z);
@@ -410,7 +411,7 @@ vfRay( uchar* finalImage, const real* vertList,
 						nextFace.zParams.z = ( fmCol0.x * (-tmp.y) - (fmCol1.x * tmp.z) + faceTarget.x
 								       * (fmCol0.y * fmCol1.z - fmCol1.y * fmCol0.z) ) / determinant;
 
-						faceTarget.x = fv0.w; faceTarget.y = fv1.w; faceTarget.z = fv2.w;
+						faceTarget.x = fv[(tfNext.y+0)&3].w; faceTarget.y = fv[(tfNext.y+1)&3].w; faceTarget.z = fv[(tfNext.y+2)&3].w;
 
 						tmp.x = faceTarget.y - faceTarget.z;
 						tmp.y = (faceTarget.y * fmCol1.z) - (fmCol1.y * faceTarget.z);
